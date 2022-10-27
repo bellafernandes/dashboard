@@ -1,0 +1,253 @@
+.bg-card-light {
+  background-color: #c5c5c5;
+}
+
+.bg-card-dark{
+  background-color:#171717;
+}
+
+.fc-license-message {
+    display: none;
+}
+
+.fc .fc-timegrid-slot {
+    height: 4em;
+    padding: 0;
+}
+
+.fc-direction-ltr .fc-timegrid-slot-label-frame {
+    text-align: center;
+  }
+
+  .fc .fc-timegrid-col.fc-day-today {
+    background-color: transparent;
+    /* background-color: var(--fc-today-bg-color, rgba(255, 220, 40, 0.15)); */
+  }
+
+  .fc-direction-ltr .fc-timegrid-col-events {
+    margin: 0;
+  }
+
+  .fc-v-event {
+    display: block;
+    border-left: 5px solid #3788d8;
+    background-color: #3788d841;
+  }
+
+  .fc-theme-standard td, .fc-theme-standard th {
+    border: 1px solid rgba(221, 221, 221, 0.226);
+  }
+
+  .booking_calendar.fc .fc-scrollgrid-section-sticky > * {
+    background-color: transparent;
+    position: sticky;
+    z-index: 3;
+  }
+
+  .booking_calendar .fc .fc-col-header-cell-cushion {
+    display: inline-block;
+    padding: 20px 4px;
+
+  }
+
+  .booking_calendar .fc .fc-today-button {
+    display: none;
+  }
+
+  .booking_calendar .fc .fc-prev-button, .booking_calendar .fc .fc-next-button {
+    background-color: transparent;
+    border: none;
+  }
+
+  .fc-day-today {
+    /* background-color: #3788d8; */
+    background-color: transparent;
+    color: #3788d8;
+  }
+
+  .booking_calendar .fc .fc-toolbar-title {
+    font-size: 1.3em;
+  }
+
+  .booking_calendar .fc-theme-standard th{
+    border-right: none;
+    border-left: none;
+    border-bottom: none;
+    
+  }
+
+  .booking_calendar .fc-theme-standard td {
+    border-left: 1px solid rgba(170, 170, 170, 0.411);;
+    border-right: 1px solid rgba(170, 170, 170, 0.411);
+    border-top: 1px dashed #aaa;
+    border-bottom: 1px dashed #aaa;
+    
+  }
+
+  
+  .booking_calendar .fc .fc-timegrid-col.fc-day-today {
+    background-color: transparent;
+  }
+
+  .booking_calendar .fc-v-event {
+    background-color: rgba(108, 110, 236, 0.541);
+    border-left: 4px solid rgb(99 102 241);
+    border-top: none;
+    border-bottom: none;
+    border-right: none;
+  }
+
+  .booking_calendar .fc-timegrid-event-harness-inset .fc-timegrid-event, .booking_calendar .fc-timegrid-event.fc-event-mirror, .booking_calendar .fc-timegrid-more-link {
+    box-shadow: none;
+    padding: 4px;
+  }
+ 
+
+  .booking_calendar tr {
+    height: 70px;
+    
+  }
+
+  .booking_calendar .fc .fc-scrollgrid-section-sticky > * {
+    background-color: transparent;
+    border: none;
+    font-weight: 400;
+  }
+  
+  .booking_calendar .fc-theme-standard .fc-scrollgrid {
+    border: none;
+  }
+
+  .booking_calendar .fc .fc-scrollgrid-section-header > *, .fc .fc-scrollgrid-section-footer > * {
+    border: none;
+  }
+
+
+  .fc-theme-standard td,
+  .fc-theme-standard th {
+    border: none
+
+  }
+
+  .fc-theme-standard .fc-scrollgrid {
+    border: none;
+  }
+
+
+
+
+.fc .fc-scrollgrid-section > * {
+    /* border-top-width: 0;
+    border-left-width: 0; */
+    border: none;
+  }
+
+
+
+
+
+
+
+
+
+
+
+  .CircularProgressbar .CircularProgressbar-path {
+    transition: 2s;
+  }
+
+
+
+  .calculator {
+    width: 100%;
+    height: 100%;
+    background: black;
+    
+    display: flex;
+    flex-direction: column;
+  }
+  
+  #wrapper .calculator {
+    box-shadow: 0px 0px 20px 0px #aaa;
+  }
+  
+  .calculator-display {
+    color: white;
+    background: #1c191c;
+    line-height: 130px;
+    font-size: 6em;
+    
+    flex: 1;
+  }
+  
+  .auto-scaling-text {
+    display: inline-block;
+  }
+  
+  .calculator-display .auto-scaling-text {
+    padding: 0 30px;
+    position: absolute;
+    right: 0;
+    transform-origin: right;
+  }
+  
+  .calculator-keypad {
+    height: 400px;
+    
+    display: flex;
+  }
+  
+  .calculator .input-keys {
+    width: 240px;
+  }
+  
+  .calculator .function-keys {
+    display: flex;
+  }
+  
+  .calculator .digit-keys {
+    background: #e0e0e7;
+    
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap-reverse;
+  }
+  
+  .calculator-key {
+    width: 80px;
+    height: 80px;
+    border-top: 1px solid #777;
+    border-right: 1px solid #666;  
+    text-align: center;
+    line-height: 80px;
+  }
+  .calculator .function-keys .calculator-key {
+    font-size: 2em;
+  }
+  .calculator .function-keys .key-multiply {
+    line-height: 50px;
+  }
+  .calculator .digit-keys .calculator-key {
+    font-size: 2.25em;
+  }
+  .calculator .digit-keys .key-0 {
+    width: 160px;
+    text-align: left;
+    padding-left: 32px;
+  }
+  .calculator .digit-keys .key-dot {
+    padding-top: 1em;
+    font-size: 0.75em;
+  }
+  .calculator .operator-keys .calculator-key {
+    color: white;
+    border-right: 0;
+    font-size: 3em;
+  }
+  
+  .calculator .function-keys {
+    background: linear-gradient(to bottom, rgba(202,202,204,1) 0%, rgba(196,194,204,1) 100%);
+  }
+  .calculator .operator-keys {
+    background:  linear-gradient(to bottom, rgba(252,156,23,1) 0%, rgba(247,126,27,1) 100%);
+  }
