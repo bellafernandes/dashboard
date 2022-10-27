@@ -66,7 +66,12 @@
   }
 
   .booking_calendar .fc .fc-toolbar-title {
-    font-size: 1.3em;
+    display: none;
+  }
+
+  .booking_calendar .fc .fc-prev-button:hover, .booking_calendar .fc .fc-next-button:hover {
+    background: transparent;
+    color: rgb(71, 148, 236);
   }
 
   .booking_calendar .fc-theme-standard th{

@@ -316,7 +316,7 @@ export default class CalendarDemo extends React.Component {
               height={`auto`}
               eventTimeFormat={dateFormat}
               slotLabelFormat={dateFormat}
-              locale="pt-br"
+              // locale="pt-br"
             />
           </div>
         )}

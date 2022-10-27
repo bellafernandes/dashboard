@@ -18,7 +18,7 @@ export default function Switcher() {
     <>
       <div className="flex items-center bottom-0">
         <Tooltip
-          content={colorTheme === "light" ? "Modo Escuro" : "Modo Claro"}
+          content={colorTheme === "light" ? "Dark Mode" : "Light Mode"}
           className="-mt-2 bg-sky-600"
         >
           <Button className="shadow-inherit">

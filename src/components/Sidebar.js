@@ -1,4 +1,4 @@
-import { React, useState, useCallback } from "react";
+import { React, useState, useEffect } from "react";
 import { useSpring, animated, config } from "react-spring";
 import clsx from "https://cdn.skypack.dev/clsx@1.1.1";
 import "./styles.css";
@@ -6,10 +6,10 @@ import "./styles.css";
 const sidebarItems = [
   [
     { id: "0", title: "Dashboard", link: "/", notifications: false },
-    { id: "1", title: "Tarefas", link: "/Tasks", notifications: 4 },
-    { id: "2", title: "Faturas", link: "/Invoices", notifications: false },
-    { id: "3", title: "Equipe", link: "/Team", notifications: false },
-    { id: "4", title: "Agenda", link: "/CalendarTasks" },
+    { id: "1", title: "Tasks", link: "/Tasks", notifications: 4 },
+    { id: "2", title: "Invoices", link: "/Invoices", notifications: false },
+    { id: "3", title: "Chat", link: "/Team", notifications: false },
+    // { id: "4", title: "Agenda", link: "/CalendarTasks" },
   ],
   [
     { id: "6", title: "Configurações", notifications: false },
@@ -25,6 +25,19 @@ export default function Sidebar({ onSidebarHide, showSidebar }) {
     from: { dashOffset: 113.113, indicatorWidth: 0, percentage: 0 },
     config: config.molasses,
   });
+
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+  }, []);
+
+  if (isLoading) {
+    return <Skeleton />;
+  } else {
 
 
   return (
@@ -59,36 +72,6 @@ export default function Sidebar({ onSidebarHide, showSidebar }) {
             />
           </a>
         ))}
-        {/* <div className="mt-8 mb-0 font-bold px-3 block sm:hidden xl:block dark:text-gray-600">
-          FERRAMENTAS
-        </div> */}
-
-        {/* {showDrawerCalc ? (
-          <button
-            className="flex text-4xl text-white items-center cursor-pointer fixed right-10 top-6 z-50"
-            onClick={() => setShowDrawerCalc(!showDrawerCalc)}
-          >
-            x
-          </button>
-        ) : (
-          <p onClick={() => setShowDrawerCalc(!showDrawerCalc)}></p>
-        )} */}
-
-        {/* <div
-          className={clsx(
-            "w-full mt-6 mb-6 flex items-center px-3 sm:px-0 xl:px-3 justify-start sm:justify-center xl:justify-start sm:mt-6 xl:mt-3 cursor-pointer dark:text-gray-300"
-          )}
-        >
-          <SidebarIcons id="" />
-          <div
-            className="block sm:hidden xl:block ml-2"
-            onClick={() => setShowDrawerCalc(!showDrawerCalc)}
-          >
-            Calculadora
-          </div>
-        </div> */}
-
-        
       </div>
     </div>
   );
@@ -128,16 +111,6 @@ function IconButton({
         className="w-full h-full"
       />
     </button>
-  );
-}
-
-function Icon({ path = "options", className = "w-4 h-4" }) {
-  return (
-    <img
-      src={`https://assets.codepen.io/3685267/${path}.svg`}
-      alt=""
-      className={clsx(className)}
-    />
   );
 }
 
@@ -205,3 +178,31 @@ function SidebarIcons({ id }) {
   );
 }
 
+function Skeleton () {
+  return (
+    <div
+      className={clsx(
+        "fixed inset-y-0 left-0 bg-gray-100 transition duration-200 dark:bg-zinc-900 shadow-lg ring-1 ring-black ring-opacity-5 w-full sm:w-20 xl:w-60 sm:flex flex-col z-40",
+        showSidebar ? "flex" : "hidden"
+      )}
+    >
+      <div className="flex-shrink-0 overflow-hidden p-2">
+        <div className="flex items-center h-full sm:justify-center xl:justify-start p-2 sidebar-separator-top">
+          <div className="block sm:hidden xl:block w-3/5 h-10 rounded-lg container"/>
+          <div className="flex-grow sm:hidden xl:block" />
+          <IconButton
+            icon="res-react-dash-sidebar-close"
+            className="block sm:hidden"
+            onClick={onSidebarHide}
+          />
+        </div>
+      </div>
+      <div className="flex-grow overflow-x-hidden overflow-y-auto flex flex-col align-center">
+        {sidebarItems[0].map((i) => (
+          <div className="w-4/5 h-6 mt-6 mb-10 ml-2 rounded-lg container"/>
+        ))}
+      </div>
+    </div>
+  )
+}
+}

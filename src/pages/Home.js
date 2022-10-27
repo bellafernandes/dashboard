@@ -1,15 +1,33 @@
 import clsx from "https://cdn.skypack.dev/clsx@1.1.1";
-import React, { useState, useCallback, PureComponent } from "react";
-import ReactDOM, { render } from "react-dom";
+import React, { useState, useCallback, useEffect } from "react";
 import { useSpring, animated, config } from "react-spring";
 import Calendar from "react-calendar";
 import Sidebar from "../components/Sidebar";
-
 import { CircularProgressbar } from "react-circular-progressbar";
-
 import ProgressProvider from "../components/ProgressProvider";
-
 import "flowbite";
+import "./styles.css";
+
+import importantTasksData from "../data/importantTasksData";
+
+// Swiper React components
+import { Swiper, SwiperSlide } from "swiper/react";
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+
+// import required modules
+import { Pagination, Navigation } from "swiper";
+
+import {
+  ArrowRightIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  LinkIcon,
+  CalendarIcon,
+} from "@heroicons/react/solid";
 
 import {
   LineChart,
@@ -23,19 +41,7 @@ import {
   Bar,
 } from "recharts";
 
-import {
-  Tabs,
-  TabsHeader,
-  TabsBody,
-  Tab,
-  TabPanel,
-} from "@material-tailwind/react";
-
-import "./styles.css";
-
-const pi = Math.PI;
-
-const graphData = ["Seg", "Ter", "Qua", "Qui", "Sex"].map((i) => {
+const graphData = ["Mon", "Tue", "Wed", "Thu", "Fri"].map((i) => {
   const revenue = 500 + Math.random() * 2000;
   const expectedRevenue = Math.max(revenue + (Math.random() - 0.5) * 2000, 0);
   return {
@@ -46,38 +52,6 @@ const graphData = ["Seg", "Ter", "Qua", "Qui", "Sex"].map((i) => {
   };
 });
 
-const data = [
-  {
-    name: "Seg",
-    masc: 4000,
-    fem: 2400,
-    amt: 2400,
-  },
-  {
-    name: "Ter",
-    masc: 3000,
-    fem: 1398,
-    amt: 2210,
-  },
-  {
-    name: "Qua",
-    masc: 2000,
-    fem: 9800,
-    amt: 2290,
-  },
-  {
-    name: "Qui",
-    masc: 2780,
-    fem: 3908,
-    amt: 2000,
-  },
-  {
-    name: "Sex",
-    masc: 1890,
-    fem: 4800,
-    amt: 2181,
-  },
-];
 
 export default function Home() {
   const [showSidebar, onSetShowSidebar] = useState(false);
@@ -99,98 +73,94 @@ export default function Home() {
 }
 
 function Content({ onSidebarHide }) {
-  const [date, setDate] = useState(new Date());
+  const [date] = useState(new Date());
 
-  return (
-    <div className="flex w-full bg-zinc-300/90 dark:bg-zinc-900/95">
-      <div className="w-full h-screen hidden sm:block sm:w-20 xl:w-60 flex-shrink-0">
-        .
-      </div>
-      <div className="h-auto flex-grow overflow-hidden overflow-auto flex flex-wrap content-start p-2">
-        <div className="w-full sm:flex p-2 items-end">
-          <div className="sm:flex-grow flex justify-between">
-            <div className="-mt-8 sm:-mt-16 absolute">
-              <div className="flex items-center">
-                <div className="text-md sm:text-lg md:text-2xl text-zinc-900/90 dark:text-gray-200">
-                  Dashboard
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+  }, []);
+
+  if (isLoading) {
+    return <Skeleton />;
+  } else {
+    return (
+      <div className="flex w-full bg-zinc-300/90 dark:bg-zinc-900/95">
+        <div className="w-full h-screen hidden sm:block sm:w-20 xl:w-60 flex-shrink-0">
+          .
+        </div>
+        <div className="h-auto flex-grow overflow-hidden overflow-auto flex flex-wrap content-start p-2">
+          <div className="w-full sm:flex p-2 items-end">
+            <div className="sm:flex-grow flex justify-between">
+              <div className="-mt-8 sm:-mt-16 absolute">
+                <div className="flex items-center">
+                  <div className="text-md sm:text-lg md:text-2xl text-zinc-900/90 dark:text-gray-200">
+                    Dashboard
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-center">
-                <Icon
-                  path="res-react-dash-date-indicator"
-                  className="w-3 h-3"
-                />
-                <div className="ml-2">
-                  {date.length > 0 ? (
-                    <p className="text-center">
-                      <span className="bold">Start:</span>{" "}
-                      {date[0].toDateString()}
-                      &nbsp;|&nbsp;
-                      <span className="bold">End:</span>{" "}
-                      {date[1].toDateString()}
-                    </p>
-                  ) : (
+                <div className="flex items-center">
+                  <Icon
+                    path="res-react-dash-date-indicator"
+                    className="w-3 h-3"
+                  />
+                  <div className="ml-2">
                     <p className="text-xs sm:text-sm md:text-base text-center text-zinc-700/90 dark:text-gray-400">
                       {date.toDateString()}
                     </p>
-                  )}
+                  </div>
                 </div>
               </div>
+              <IconButton
+                icon="res-react-dash-sidebar-open"
+                className="block sm:hidden absolute -mt-16 dark:text-gray-200"
+                onClick={onSidebarHide}
+              />
             </div>
-            <IconButton
-              icon="res-react-dash-sidebar-open"
-              className="block sm:hidden absolute -mt-16 dark:text-gray-200"
-              onClick={onSidebarHide}
-            />
           </div>
-        </div>
 
-        <div className="w-full p-2 lg:w-3/5">
-          <div className="rounded-lg bg-card transition duration-200 h-96 bg-gray-100 shadow-lg ring-1 ring-black ring-opacity-5 dark:bg-zinc-900">
-            <Graph />
+          <div className="w-full p-2 lg:w-3/5">
+            <div className="rounded-lg bg-card transition duration-200 h-96 bg-gray-100 shadow-lg ring-1 ring-black ring-opacity-5 dark:bg-zinc-900">
+              <Graph />
+            </div>
           </div>
-        </div>
-        <div className="w-full p-2 lg:w-2/5 2xl:w-1/5">
-          <div className="rounded-lg bg-card h-96 transition duration-200 bg-gray-100 shadow-lg ring-1 ring-black ring-opacity-5 dark:bg-zinc-900">
-            <Activities />
+          <div className="w-full p-2 lg:w-2/5 2xl:w-1/5">
+            <div className="rounded-lg bg-card h-96 transition duration-200 bg-gray-100 shadow-lg ring-1 ring-black ring-opacity-5 dark:bg-zinc-900">
+              <Activities />
+            </div>
           </div>
-        </div>
-        <div className="w-full p-2 lg:hidden 2xl:inline 2xl:w-1/5">
-          <div className="rounded-lg bg-card h-96 transition duration-200 bg-gray-100 shadow-lg ring-1 ring-black ring-opacity-5 dark:bg-zinc-900">
-            <Segmentation />
+          <div className="w-full p-2 lg:hidden 2xl:inline 2xl:w-1/5">
+            <div className="rounded-lg bg-card h-96 transition duration-200 bg-gray-100 shadow-lg ring-1 ring-black ring-opacity-5 dark:bg-zinc-900">
+              <Segmentation />
+            </div>
           </div>
-        </div>
-        <div className="w-full p-2 lg:w-1/3">
-          <div className="rounded-lg bg-card h-96 transition duration-200 bg-gray-100 shadow-lg ring-1 ring-black ring-opacity-5 dark:bg-zinc-900">
-            <Clients />
+          <div className="w-full p-2 lg:w-1/2">
+            <div className="rounded-lg bg-card h-96 transition duration-200 bg-gray-100 shadow-lg ring-1 ring-black ring-opacity-5 dark:bg-zinc-900">
+              <Team />
+            </div>
           </div>
-        </div>
-        <div className="w-full p-2 lg:w-1/3">
-          <div className="rounded-lg bg-card h-96 transition duration-200 bg-gray-100 shadow-lg ring-1 ring-black ring-opacity-5 dark:bg-zinc-900">
-            <Team />
-          </div>
-        </div>
-
-        <div className="w-full p-2 lg:w-1/3">
-          <div className="rounded-lg bg-card overflow-hidden h-96 transition duration-200 bg-gray-100 shadow-lg ring-1 ring-black ring-opacity-5 dark:bg-zinc-900">
-            <Notifications />
+          <div className="w-full p-2 lg:w-1/2">
+            <div className="rounded-lg bg-card h-auto transition duration-200 bg-gray-100 shadow-lg ring-1 ring-black ring-opacity-5 dark:bg-zinc-900">
+              <ImportantTasks />
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
 
 function Graph() {
   const CustomTooltip = () => (
     <div className="rounded-xl overflow-hidden tooltip-head">
       <div className="flex items-center justify-between p-2">
-        <div className="text-zinc-900/90 dark:text-gray-300">Receita</div>
+        <div className="text-zinc-900/90 dark:text-gray-300">Revenue</div>
         <Icon path="res-react-dash-options" className="w-2 h-2" />
       </div>
       <div className="tooltip-body text-center p-3">
-        <div className="text-white font-bold">R$1300.50</div>
-        <div className="">Receita de 230 vendas</div>
+        <div className="text-white font-bold">$1300.50</div>
+        <div className="text-zinc-300">Revenue of 230 sells</div>
       </div>
     </div>
   );
@@ -200,27 +170,12 @@ function Graph() {
         <div className="flex items-center">
           <div className="text-white flex items-center">
             <span className="text-zinc-900/90 dark:text-gray-300 font-medium">
-              Receita (R$)
+              Revenue ($)
             </span>
             <Icon path={"res-react-dash-bull"} className="w-6 h-6 ml-4 mr-2" />
           </div>
           <span className="text-green-400">+0,3%</span>
           <div className="flex-grow" />
-
-          {/* <svg
-            aria-hidden="true"
-            class="w-5 h-5 text-gray-200 dark:text-gray-600 fill-[#6B8DE3]"
-            viewBox="0 0 100 101"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-              // fill="currentColor"
-              fill="currentFill"
-            />
-          </svg> */}
-
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="20"
@@ -245,20 +200,7 @@ function Graph() {
               transform="rotate(90 50 50)"
             />
           </svg>
-          <div className="ml-1 mr-4 dark:text-gray-300">Esta semana</div>
-          {/* <svg
-            aria-hidden="true"
-            class="w-5 h-5 text-gray-200 dark:text-gray-600"
-            viewBox="0 0 100 101"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-              fill="currentColor"
-            />
-          </svg> */}
-
+          <div className="ml-1 mr-4 dark:text-gray-300">This week</div>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="20"
@@ -281,10 +223,7 @@ function Graph() {
               transform="rotate(90 50 50)"
             />
           </svg>
-          <div className="ml-1 dark:text-gray-300">Semana passada</div>
-          {/* <div className="ml-6 w-5 h-5 flex justify-center items-center rounded-full icon-background">
-            ?
-          </div> */}
+          <div className="ml-1 dark:text-gray-300">Last week</div>
         </div>
         {/* <div className="font-bold ml-5">Nov - Jul</div> */}
       </div>
@@ -335,123 +274,157 @@ function Graph() {
   );
 }
 
-function Notifications() {
-  const data = [
-    {
-      label: "Ajuda",
-      value: "ajuda",
-
-      icon1: "../../assets/shop-icon.png",
-      title1: "Ofertas",
-      desc1: "Veja como atrair mais clientes",
-
-      icon2: "../../assets/invoice-icon.png",
-      title2: "Faturas",
-      desc2: "Emita faturas automaticamente",
-
-      icon3: "../../assets/chat-icon.png",
-      title3: "Suporte",
-      desc3: "Veja as solicitações dos seus clientes",
-    },
-    {
-      label: "Equipe",
-      value: "equipe",
-
-      icon1: "../../assets/profile-picture-2.jpg",
-      title1: "Equipe",
-      desc1: "Jim Morrison entrou para a equipe",
-
-      icon2: "../../assets/profile-picture-3.jpg",
-      title2: "Tarefas",
-      desc2: "Lucy Roberts finalizou uma tarefa",
-
-      icon3: "../../assets/profile-picture-4.jpg",
-      title3: "Vendas",
-      desc3: "Alison Parker realizou uma venda",
-    },
-  ];
-
+function ImportantTasks() {
   return (
     <div className="flex p-4 flex-col h-full">
-      <Tabs value="ajuda">
-        <TabsHeader className="bg-zinc-300 dark:bg-zinc-600 text-zinc-900/90 dark:text-gray-800">
-          {data.map(({ label, value }) => (
-            <Tab key={value} value={value} className="font-medium">
-              {label}
-            </Tab>
-          ))}
-        </TabsHeader>
-        <TabsBody>
-          {data.map(
-            ({
-              value,
-              icon1,
-              title1,
-              desc1,
-              icon2,
-              title2,
-              desc2,
-              icon3,
-              title3,
-              desc3,
-            }) => (
-              <TabPanel key={value} value={value}>
-                <div className="flex items-center">
-                  <img
-                    src={icon1}
-                    className="w-10 h-10 rounded-full mt-4 mr-4"
-                  />
-                  <div className="flex flex-col mt-4">
-                    <span className="text-zinc-900/90 dark:text-gray-200 font-medium">
-                      {title1}
-                    </span>
-                    <span className="text-zinc-700/90 dark:text-gray-400 font-normal">
-                      {desc1}
-                    </span>
-                  </div>
-                </div>
+      <div className="w-full h-full">
+          <div className="flex justify-between w-full">
+            <div>
+              <h1 className="text-zinc-900/90 dark:text-gray-300 font-medium">
+                Important tasks
+              </h1>
+            </div>
+            <div className="flex text-zinc-500/90 dark:text-gray-500">
+              <ChevronLeftIcon className="button-prev w-6 h-6 hover:text-zinc-900/90 hover:dark:text-gray-300" />
+              <ChevronRightIcon className="button-next w-6 h-6 hover:text-zinc-900/90 hover:dark:text-gray-300" />
+            </div>
+          </div>
+          <div className="mt-6">
+            <Swiper
+              pagination={{
+                type: "progressbar",
+              }}
+              breakpoints={{
+                640: {
+                  slidesPerView: 1,
+                  spaceBetween: 0,
+                },
+                768: {
+                  slidesPerView: 2,
+                  spaceBetween: 10,
+                },
+                912: {
+                  slidesPerView: 3,
+                  spaceBetween: 10,
+                },
+                1024: {
+                  slidesPerView: 1,
+                  spaceBetween: 0,
+                },
+                1240: {
+                  slidesPerView: 2,
+                  spaceBetween: 10,
+                },
+                1342: {
+                  slidesPerView: 2,
+                  spaceBetween: 10,
+                },
+                1520: {
+                  slidesPerView: 2,
+                  spaceBetween: 10,
+                },
+                1680: {
+                  slidesPerView: 2.5,
+                  spaceBetween: 10,
+                },
+              }}
+              navigation={{
+                nextEl: ".button-next",
+                prevEl: ".button-prev",
+              }}
+              modules={[Pagination, Navigation]}
+              className="mySwiper w-full h-max"
+            >
+              {importantTasksData.map((el) => (
+                <SwiperSlide className="mr-6 cursor-grab">
+                  <div className="bg-purple-500 w-full p-4">
+                    <div className="flex flex-col-2 justify-between">
+                      <div>
+                        <h1 className="text-gray-300 text-sm mb-4">Members:</h1>
+                        <div class="flex mb-5 -space-x-4">
+                          <img
+                            class="w-10 h-10 rounded-full border-2 border-white"
+                            src={el.imgTeam1}
+                            alt=""
+                          />
+                          <img
+                            class="w-10 h-10 rounded-full border-2 border-white"
+                            src={el.imgTeam2}
+                            alt=""
+                          />
+                          <img
+                            class="w-10 h-10 rounded-full border-2 border-white"
+                            src={el.imgTeam3}
+                            alt=""
+                          />
+                          <img
+                            class="w-10 h-10 rounded-full border-2 border-white"
+                            src={el.imgTeam4}
+                            alt=""
+                          />
+                        </div>
+                      </div>
+                      <div className="ml-4">
+                        <h1 className="text-gray-300 text-sm mb-4">Due:</h1>
+                        <p className="text-gray-300 text-base">{el.deadline}</p>
+                        <p></p>
+                      </div>
+                    </div>
 
-                <div className="flex items-center">
-                  <img
-                    src={icon2}
-                    className="w-10 h-10 rounded-full mt-4 mr-4"
-                  />
-                  <div className="flex flex-col mt-4">
-                    <span className="text-zinc-900/90 dark:text-gray-200 font-medium">
-                      {title2}
-                    </span>
-                    <span className="text-zinc-700/90 dark:text-gray-400 font-normal">
-                      {desc2}
-                    </span>
-                  </div>
-                </div>
+                    <hr className="mb-4" />
 
-                <div className="flex items-center">
-                  <img
-                    src={icon3}
-                    className="w-10 h-10 rounded-full mt-4 mr-4"
-                  />
-                  <div className="flex flex-col mt-4">
-                    <span className="text-zinc-900/90 dark:text-gray-200 font-medium">
-                      {title3}
-                    </span>
-                    <span className="text-zinc-700/90 dark:text-gray-400 font-normal">
-                      {desc3}
-                    </span>
+                    <div>
+                      <h1 className="text-gray-200 font-medium">{el.title}</h1>
+                      <ul className="text-gray-300 text-sm">
+                        <li className="mt-2 mb-4">
+                          <input
+                            type="checkbox"
+                            id="cbox"
+                            value="task_checkbox"
+                            className="ring-0 border-0 focus:ring-0 mr-2 transition ease-in-out delay-50 rounded-full"
+                          />
+                          <label for="cbox">{el.task1}</label>
+                        </li>
+                        <li className="mb-4">
+                          <input
+                            type="checkbox"
+                            id="cbox"
+                            value="task_checkbox"
+                            className="ring-0 border-0 focus:ring-0 mr-2 transition ease-in-out delay-50 rounded-full"
+                          />
+                          <label for="cbox">{el.task2}</label>
+                        </li>
+                        <li className="mb-4">
+                          <input
+                            type="checkbox"
+                            id="cbox"
+                            value="task_checkbox"
+                            className="ring-0 border-0 focus:ring-0 mr-2 transition ease-in-out delay-50 rounded-full"
+                          />
+                          <label for="cbox">{el.task3}</label>
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="w-full h-auto">
+                      <a href="/Tasks">
+                      <button className="flex justify-between text-sm text-gray-300 w-full items-center mt-6 bg-purple-400/50 hover:bg-purple-600/50 transition ease-in-out delay-50 p-4">
+                        <div>See details</div>
+                        <ArrowRightIcon className="w-4 h-4" />
+                      </button>
+                      </a>
+                    </div>
                   </div>
-                </div>
-              </TabPanel>
-            )
-          )}
-        </TabsBody>
-      </Tabs>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
+        </div>
     </div>
   );
 }
 
 function Activities() {
-  // const [valueEnd, setValueEnd] = React.useState(21, 67);
-
+  
   return (
     <div className="flex p-4 flex-col h-full text-zinc-900/90 dark:text-gray-300">
       <div
@@ -469,7 +442,7 @@ function Activities() {
           )}
         </ProgressProvider>
         <span className="flex flex-wrap align-middle ml-4">
-          Tarefas concluídas
+          Completed tasks
         </span>
       </div>
 
@@ -487,9 +460,7 @@ function Activities() {
             />
           )}
         </ProgressProvider>
-        <span className="flex flex-wrap align-middle ml-4">
-          Metas alcançadas
-        </span>
+        <span className="flex flex-wrap align-middle ml-4">Goals achieved</span>
       </div>
 
       <div
@@ -507,7 +478,7 @@ function Activities() {
           )}
         </ProgressProvider>
         <span className="flex flex-wrap align-middle ml-4">
-          Clientes satisfeitos
+          Satisfied customers
         </span>
       </div>
 
@@ -532,7 +503,7 @@ function Segmentation() {
     <div className="flex p-4 flex-col h-full">
       <div className="flex justify-between items-center">
         <div className="text-zinc-900/90 dark:text-gray-300 font-medium mb-4">
-          Calendário
+          Calendar
         </div>
       </div>
 
@@ -540,52 +511,16 @@ function Segmentation() {
 
       <div className="flex-grow" />
       <div className="flex justify-center">
-        <div className="dark:text-gray-300 sidebar-item">
+        {/* <div className="dark:text-gray-300 sidebar-item">
           <a href="/CalendarTasks">Ver tudo</a>
-        </div>
+        </div> */}
       </div>
-    </div>
-  );
-}
-
-function Clients() {
-  return (
-    <div className="flex p-4 flex-col h-full">
-      <div className="flex justify-between items-center">
-        <div className="text-zinc-900/90 dark:text-gray-300 font-medium mb-4">
-          Clientes
-        </div>
-      </div>
-
-      <ResponsiveContainer width="100%" height="100%">
-        <BarChart
-          width={500}
-          height={300}
-          data={data}
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
-          }}
-        >
-          <CartesianGrid strokeDasharray="1 1" />
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
-          <Bar dataKey="fem" fill="#484091" />
-          <Bar dataKey="masc" fill="#8e6dca" />
-        </BarChart>
-      </ResponsiveContainer>
     </div>
   );
 }
 
 function Team() {
-  const [date, setDate] = useState(new Date());
-
   const {
-    dashOffset,
     indicatorWidth,
     indicatorWidth2,
     indicatorWidth3,
@@ -622,9 +557,8 @@ function Team() {
     <div className="flex p-4 flex-col h-full">
       <div className="flex justify-between items-center">
         <div className="text-zinc-900/90 dark:text-gray-300 font-medium mb-4">
-          Equipe B Vendas
+          Team B
         </div>
-        {/* <Icon path="res-react-dash-plus" className="w-5 h-5" /> */}
       </div>
 
       <div class="overflow-hidden relative">
@@ -632,13 +566,13 @@ function Team() {
           <thead class="border-b text-xs uppercase bg-transparent">
             <tr>
               <th scope="col" className="py-3 px-6">
-                <span className="font-medium">Nome</span>
+                <span className="font-medium">Name</span>
               </th>
               <th scope="col" className="py-3 px-6">
-                <span className="font-medium">Progresso</span>
+                <span className="font-medium">Progress</span>
               </th>
               <th scope="col" className="py-3 px-6">
-                <span className="font-medium">Projetos</span>
+                <span className="font-medium">Tasks</span>
               </th>
             </tr>
           </thead>
@@ -857,4 +791,123 @@ function IconButton({
   );
 }
 
-ReactDOM.render(<Home />, document.getElementById("root"));
+function Skeleton() {
+  return (
+    <div className="flex w-full bg-zinc-300/90 dark:bg-zinc-900/95">
+      <div className="w-full h-screen hidden sm:block sm:w-20 xl:w-60 flex-shrink-0">
+        .
+      </div>
+      <div className="h-auto flex-grow overflow-hidden overflow-auto flex flex-wrap content-start p-2">
+        <div className="w-full sm:flex p-2 items-end">
+          <div className="sm:flex-grow flex justify-between">
+            <div className="-mt-8 sm:-mt-16 absolute">
+              <div className="flex items-center mb-2">
+                <div className="w-36 h-8 rounded-lg container" />
+              </div>
+              <div className="flex items-center">
+                <div className="w-36 h-6 rounded-lg container" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Graph */}
+        <div className="w-full p-2 lg:w-3/5">
+          <div className="rounded-lg bg-card transition duration-200 h-96 shadow-lg ring-1 ring-black ring-opacity-5 px-4 py-6">
+            <div className="flex justify-between w-full">
+              <div className="w-52 h-6 rounded-lg container" />
+              <div className="w-48 h-6 rounded-lg container" />
+            </div>
+
+            <div className="w-full h-5/6 rounded-lg container mx-auto mt-6 py-4" />
+          </div>
+        </div>
+
+        {/* Activities */}
+        <div className="w-full p-2 lg:w-2/5 2xl:w-1/5">
+          <div className="rounded-lg bg-card h-96 shadow-lg ring-1 ring-black ring-opacity-5">
+            <div className="flex p-4 flex-col h-full">
+              {/* Activity 1 */}
+              <div className="flex sm:justify-start md:justify-center lg:justify-start content-start items-center mt-4">
+                <div className="container rounded-full w-24 h-24" />
+                <div className="container rounded-lg w-2/4 h-6 align-middle ml-4" />
+              </div>
+
+              {/* Activity 2 */}
+              <div className="flex sm:justify-start md:justify-center lg:justify-start content-start items-center mt-4">
+                <div className="container rounded-full w-24 h-24" />
+                <div className="container rounded-lg w-2/4 h-6 align-middle ml-4" />
+              </div>
+
+              {/* Activity 3 */}
+              <div className="flex sm:justify-start md:justify-center lg:justify-start content-start items-center mt-4">
+                <div className="container rounded-full w-24 h-24" />
+                <div className="container rounded-lg w-2/4 h-6 align-middle ml-4" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Calendar */}
+
+        <div className="w-full p-2 lg:hidden 2xl:inline 2xl:w-1/5">
+          <div className="rounded-lg bg-card h-96 transition duration-200 shadow-lg ring-1 ring-black ring-opacity-5 py-6 px-4">
+            <div className="w-28 h-6 rounded-lg container" />
+
+            <div className="w-full h-5/6 rounded-lg container mx-auto mt-4" />
+          </div>
+        </div>
+
+        {/* Customers */}
+        <div className="w-full p-2 lg:w-1/3">
+          <div className="rounded-lg bg-card h-96 transition duration-200 shadow-lg ring-1 ring-black ring-opacity-5 py-6 px-4">
+            <div className="w-28 h-6 rounded-lg container" />
+            <div className="w-full h-5/6 rounded-lg container mx-auto mt-4" />
+          </div>
+        </div>
+
+        {/* Team */}
+        <div className="w-full p-2 lg:w-1/3">
+          <div className="rounded-lg bg-card h-96 transition duration-200 shadow-lg ring-1 ring-black ring-opacity-5 py-6 px-4">
+            <div className="w-28 h-6 rounded-lg container" />
+            <div className="w-full h-5/6 rounded-lg container mx-auto mt-4" />
+          </div>
+        </div>
+
+        {/* Tips */}
+        <div className="w-full p-2 lg:w-1/3">
+          <div className="rounded-lg bg-card overflow-hidden h-96 transition duration-200 shadow-lg ring-1 ring-black ring-opacity-5 py-6 px-4">
+            <div className="w-full h-10 rounded-lg container mx-auto" />
+
+            {/* Tip 1 */}
+            <div className="flex mt-6">
+              <div className="w-14 h-14 mr-4 rounded-full container" />
+              <div className="flex flex-col my-auto">
+                <div className="w-28 h-4 rounded-lg container mb-2" />
+                <div className="w-36 h-4 rounded-lg container" />
+              </div>
+            </div>
+
+            {/* Tip 2 */}
+            <div className="flex mt-6">
+              <div className="w-14 h-14 mr-4 rounded-full container" />
+              <div className="flex flex-col my-auto">
+                <div className="w-28 h-4 rounded-lg container mb-2" />
+                <div className="w-36 h-4 rounded-lg container" />
+              </div>
+            </div>
+
+            {/* Tip 3 */}
+            <div className="flex mt-6">
+              <div className="w-14 h-14 mr-4 rounded-full container" />
+              <div className="flex flex-col my-auto">
+                <div className="w-28 h-4 rounded-lg container mb-2" />
+                <div className="w-36 h-4 rounded-lg container" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

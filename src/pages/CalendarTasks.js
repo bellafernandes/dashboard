@@ -1,10 +1,6 @@
 import clsx from "https://cdn.skypack.dev/clsx@1.1.1";
-import { React, useState, useCallback } from "react";
-import ReactDOM from "react-dom";
+import { React, useState, useEffect } from "react";
 import { useSpring, animated, config } from "react-spring";
-// import Calendar from 'react-calendar';
-// import FullCalendar from "@fullcalendar/react";
-// import dayGridPlugin from "@fullcalendar/daygrid";
 
 import CalendarDemo from "../components/CalendarDemo";
 import Sidebar from "../components/Sidebar";
@@ -50,49 +46,39 @@ function Content({ onSidebarHide }) {
 
   return (
     <div className="flex w-full bg-zinc-300/90 dark:bg-zinc-900/95">
-      <div className="w-full h-screen hidden sm:block sm:w-20 xl:w-60 flex-shrink-0">
-        .
-      </div>
-      <div className="flex-grow overflow-hidden overflow-auto flex flex-wrap content-start p-2">
-        <div className="w-full sm:flex p-2 items-end">
-          <div className="sm:flex-grow flex justify-between">
-            <div className="-mt-8 sm:-mt-16 absolute">
-              <div className="flex items-center">
-                <div className="text-md sm:text-lg md:text-2xl text-zinc-900/90 dark:text-gray-200">
-                  Calendário
+        <div className="w-full h-screen hidden sm:block sm:w-20 xl:w-60 flex-shrink-0">
+          .
+        </div>
+        <div className="h-auto flex-grow overflow-hidden overflow-auto flex flex-wrap content-start p-2">
+          <div className="w-full sm:flex p-2 items-end">
+            <div className="sm:flex-grow flex justify-between">
+              <div className="-mt-8 sm:-mt-16 absolute">
+                <div className="flex items-center">
+                  <div className="text-md sm:text-lg md:text-2xl text-zinc-900/90 dark:text-gray-200">
+                    Schedules
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-center">
-                <Icon
-                  path="res-react-dash-date-indicator"
-                  className="w-3 h-3"
-                />
-                <div className="ml-2">
-                  {date.length > 0 ? (
-                    <p className="text-center">
-                      <span className="bold">Start:</span>{" "}
-                      {date[0].toDateString()}
-                      &nbsp;|&nbsp;
-                      <span className="bold">End:</span>{" "}
-                      {date[1].toDateString()}
-                    </p>
-                  ) : (
-                    <p className="text-xs sm:text-sm md:text-lg text-center dark:text-gray-400">
+                <div className="flex items-center">
+                  <Icon
+                    path="res-react-dash-date-indicator"
+                    className="w-3 h-3"
+                  />
+                  <div className="ml-2">
+                    <p className="text-xs sm:text-sm md:text-base text-center text-zinc-700/90 dark:text-gray-400">
                       {date.toDateString()}
                     </p>
-                  )}
+                  </div>
                 </div>
               </div>
+              <IconButton
+                icon="res-react-dash-sidebar-open"
+                className="block sm:hidden absolute -mt-16 dark:text-gray-200"
+                onClick={onSidebarHide}
+              />
             </div>
-            <IconButton
-              icon="res-react-dash-sidebar-open"
-              className="block sm:hidden absolute -mt-16 dark:text-gray-200"
-              onClick={onSidebarHide}
-            />
           </div>
-        </div>
 
-        <div className="w-full pt-2 px-10">
+        <div className="w-full pt-2 px-10 overflow-y-auto">
           {/* <div className="w-full h-auto flex flex-row mt-10 mb-10 justify-between">
             <div className="w-2/6 h-auto p-4 bg-zinc-900/95 rounded-lg mr-6">
               <div className="flex flex-row justify-between text-gray-300">
@@ -285,7 +271,7 @@ function Content({ onSidebarHide }) {
           
           </div> */}
 
-          <div className="rounded-lg bg-card sm:h-80 h-60">
+          <div className="rounded-lg bg-card sm:h-80 h-60 ">
             <CalendarDemo />
           </div>
         </div>
@@ -328,5 +314,3 @@ function IconButton({
     </button>
   );
 }
-
-ReactDOM.render(<CalendarTasks />, document.getElementById("root"));

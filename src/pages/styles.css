@@ -482,6 +482,50 @@ input[type=checkbox]:checked + label {
   cursor: pointer;
 }
 
+.container2 {
+  background-image: linear-gradient(
+    -90deg,
+    #121212 0%,
+    #262626 50%,
+    #121212 100%
+  );
+  background-size: 400% 400%;
+  animation: shimmer 1.2s ease-in-out infinite;
+  
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: -135% 0%;
+  }
+
+}
+
+.container {
+  background-image: linear-gradient(
+    -90deg,
+    #7c7c7c60 0%,
+    #9696967e 50%,
+    #7c7c7c60 100%
+  );
+  background-size: 400% 400%;
+  animation: shimmer 1.2s ease-in-out infinite;
+  
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: -135% 0%;
+  }
+
+}
+
 /* .swiper-pagination-progressbar {
   margin-top: 20px;
 } */
